@@ -1,6 +1,12 @@
 import yaml
 import logging
-from attrdict import AttrDict
+
+#import collections.abc
+#import collections
+#collections.Mapping = collections.abc.Mapping
+#from attrdict import AttrDict
+from box import Box as AttrDict
+
 from transformers import AdamW, get_linear_schedule_with_warmup
 from sklearn.metrics import precision_score, accuracy_score, f1_score
 

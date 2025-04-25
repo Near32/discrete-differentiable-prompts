@@ -2,7 +2,8 @@ import os
 import numpy as np
 import torch
 from tqdm import tqdm
-from torch.utils.tensorboard import SummaryWriter
+#from torch.utils.tensorboard import SummaryWriter
+from wandb_tsbw import SummaryWriter
 from torch.nn.utils.clip_grad import clip_grad_norm_
 from sklearn.metrics import precision_score
 from argparse import ArgumentParser
@@ -44,6 +45,7 @@ def train(config, **kwargs):
     logger.info(f' * * * * * Training * * * * *')
     # Load model
     tokenizer = AutoTokenizer.from_pretrained(config.pretrain_model)
+    tokenizer = AutoTokenizer.from_pretrained(config.pretrain_model)
     model = AutoModelForMaskedLM.from_pretrained(config.pretrain_model)
     model.to(device)
 
@@ -60,7 +62,12 @@ def train(config, **kwargs):
     pet, mlm = get_pet_mappers(tokenizer, reader, model, device,
                                config.pet_method, config.mask_rate)
 
-    writer = SummaryWriter(config.output_dir)
+    writer = SummaryWriter(
+        config.output_dir,
+        wandb_kwargs={
+            "project":"discrete-differentiable-prompts",
+        },
+    )
     global_step, best_score, early_stop_count = 0, -1., 0
     config.max_train_steps = len(train_loader) * config.max_train_epochs
     optimizer, scheduler = get_optimizer_scheduler(config, model)

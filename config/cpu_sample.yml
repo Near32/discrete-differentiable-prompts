@@ -1,0 +1,39 @@
+# Data
+task_name: SST2
+train_path: data/k-shot/SST-2/16-13/train.tsv
+dev_path: data/k-shot/SST-2/16-13/dev.tsv
+test_path: data/k-shot/SST-2/16-13/test.tsv
+
+# Pretrained model path or name
+#pretrain_model: pretrain/albert-xxlarge-v2
+pretrain_model: albert/albert-xxlarge-v2
+
+# Output
+output_dir: output/sst2/
+log_file: sst2.log
+pred_file: sst2.npy  # save predicted label ids
+
+# Prompt
+pet_method: diffpet  # pet, diffpet
+full_vocab_loss: yes
+mask_rate: 0.1  # set 0.0 to disable auxiliary MLM loss
+mlm_loss_weight: 0.0  # weight of auxiliary MLM loss
+# encoder_type: none  # emb, mlp, lstm, none
+
+# Train & evaluation
+use_gpu: no 
+max_seq_len: 128
+seed: 3407  # random seed for training
+shuffle: yes  # whether shuffle order of training samples
+train_batch_size: 8
+grad_acc_steps: 1
+eval_every_steps: 20  # evaluation after weight update steps
+test_batch_size: 32
+warmup_ratio: 0.05
+weight_decay: 0.01
+learning_rate: 2.0e-5
+adam_epsilon: 1.0e-8
+max_grad_norm: 1.0
+max_train_epochs: 20
+early_stop_steps: 5
+save_metric: 'accuracy'
